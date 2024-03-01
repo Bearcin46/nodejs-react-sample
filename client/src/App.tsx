@@ -1,8 +1,11 @@
+import FormFields from "./components/FormFields";
+import Navbar from "./components/Navbar";
 import "./index.css";
 function App() {
   return (
     <div>
-      <h1 className="bg-red-600">hello ts</h1>
+      <Navbar />
+      <FormFields />
     </div>
   );
 }
