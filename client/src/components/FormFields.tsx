@@ -1,22 +1,37 @@
+import axios from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 interface FormDatas {
   fullName: string;
   age: number;
-  dob: Date;
-  image: string;
+  dob: string;
+  image: FileList;
 }
 
 const FormFields = () => {
   const { register, handleSubmit, reset } = useForm<FormDatas>();
+
   const formSubmit: SubmitHandler<FormDatas> = (data) => {
     console.log(data);
-    alert("form submitted");
+    const formdatas = new FormData();
+    formdatas.append("fullName", data.fullName);
+    formdatas.append("age", data.age.toString());
+    formdatas.append("dob", data.dob);
+    if (data.image && data.image.length > 0) {
+      formdatas.append("image", data.image[0]);
+    }
+    axios
+      .post("http://localhost:1218/upload", formdatas)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    // alert("form submitted");
     reset();
   };
   return (
     <div className="mx-auto max-w-xl">
       <form
         action=""
+        method="post"
+        encType="multipart/form-data"
         className="flex flex-col gap-4"
         onSubmit={handleSubmit(formSubmit)}
       >
